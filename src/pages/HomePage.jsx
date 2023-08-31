@@ -53,7 +53,7 @@ const HomePage = () => {
         <section className='flex flex-wrap items-start justify-center gap-3 py-6 px-2'>
           {
             new Array(5).fill(0).map((_, i) => (
-              <Cards key={i} />
+              <Cards key={i} id={i} />
             ))
           }
         </section>
