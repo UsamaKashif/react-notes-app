@@ -1,8 +1,9 @@
 import HomePage from "./pages/HomePage";
+import NotePage from "./pages/NotePage";
 
 function App() {
   return (
-    <HomePage />
+    <NotePage />
   );
 }
 
