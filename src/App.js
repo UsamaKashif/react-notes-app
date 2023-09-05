@@ -6,23 +6,40 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import SignUp from "./pages/SignUp";
+import Layout from "./components/Layout";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-    errorElement: <NotFound />
-  },
-  {
-    path: "/notes/:id",
-    element: <NotePage />,
-  }
-]);
+
+
+
 
 function App() {
+
   return (
     <RouterProvider router={router} />
   );
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <SignUp />,
+      },
+      {
+        path: "/notes",
+        element: <HomePage />,
+      },
+      {
+        path: "/notes/:id",
+        element: <NotePage />,
+      }
+    ],
+    errorElement: <NotFound />
+  }
+]);
 
 export default App;

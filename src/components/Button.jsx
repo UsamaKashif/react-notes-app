@@ -10,10 +10,11 @@ export const BTN_TYPES = {
 const Button = ({
     text,
     onClick,
-    type = "SOLID"
+    type = "SOLID",
+    disabled = false
 }) => {
   return (
-    <div onClick={onClick} className={`w-full text-base sm:text-lg 2xl:text-2xl text-center border p-2 rounded-md cursor-pointer ${BTN_TYPES[type]}`} >{text}</div>
+    <button disabled={disabled} onClick={onClick} className={`w-full text-base sm:text-lg 2xl:text-2xl text-center disabled:cursor-not-allowed border p-2 rounded-md cursor-pointer ${BTN_TYPES[type]}`} >{text}</button>
   )
 }
 
