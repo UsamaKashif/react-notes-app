@@ -111,6 +111,10 @@ const HomePage = () => {
       setCategories(categoriesBackup)
     }
   }
+
+
+  if (!user) return (<></>)
+
   return (
     <>
       <SideBar sideBarBtnOnClick={handleSignout}>
