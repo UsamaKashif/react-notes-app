@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
         })
       } else {
         setUser(null)
-        // navigate("/")
+        navigate("/")
       }
 
     })
