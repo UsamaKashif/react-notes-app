@@ -42,8 +42,10 @@ const SignUp = () => {
 
 
   return (
-    <main className='h-screen col-start-4 col-end-9 flex items-center justify-center'>
-      <Button onClick={handleSignIn} text={"SignIn With Google"} type='SOLIDINVERSE' />
+    <main className='h-screen col-span-12 flex items-center justify-center'>
+      <div>
+        <Button onClick={handleSignIn} text={"SignIn With Google"} type='SOLIDINVERSE' />
+      </div>
     </main>
   )
 }
