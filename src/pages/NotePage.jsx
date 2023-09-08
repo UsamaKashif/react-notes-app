@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import SideBar from '../components/SideBar'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -7,9 +7,11 @@ import { useNavigate, useOutletContext, useParams } from 'react-router';
 import { deleteDoc, doc, getDoc, updateDoc } from '@firebase/firestore';
 import { db } from '../firebase';
 import NotFound from "./NotFound"
+import Delta from 'quill-delta';
 
 const NotePage = () => {
     const [value, setValue] = useState('');
+    const [delta, setDelta] = useState(new Delta());
     const { user } = useOutletContext();
     const [saving, setSaving] = useState(false)
     const [data, setData] = useState({
@@ -21,6 +23,13 @@ const NotePage = () => {
     const { id } = useParams()
     const navigate = useNavigate();
 
+    const quillRef = useRef(null);
+
+
+    const handleChange = (content, delta, source, editor) => {
+        setDelta(editor.getContents());
+    };
+
     useEffect(() => {
         const fetchNote = async () => {
             if (user) {
@@ -31,7 +40,10 @@ const NotePage = () => {
                 setLoadingNote(false)
                 if (noteSnap.exists()) {
                     const data = noteSnap.data()
-                    setValue(data.note)
+                    setDelta(new Delta(data.note))
+                    // if (data.note && quillRef.current) {
+                    //     quillRef.current.getEditor().setContents(data.delta);
+                    //   }
                     setData({
                         title: data.title,
                         summary: data.summary,
@@ -43,14 +55,14 @@ const NotePage = () => {
             }
         }
         fetchNote()
-    }, [value, id, user])
+    }, [id, user])
 
 
     const handleSaveNote = async () => {
         setSaving(true)
         const noteRef = doc(db, "users", user.uid, "notes", id)
         await updateDoc(noteRef, {
-            note: value
+            note: delta.ops,
         })
         setSaving(false)
     }
@@ -89,7 +101,8 @@ const NotePage = () => {
                     <Button disabled={saving} onClick={handleSaveNote} text={saving ? "Saving ..." : "Save Note"} />
                 </div>
             </SideBar>
-            <ReactQuill className='w-full col-span-11 lg:col-span-9 h-full ' theme="snow" value={value} onChange={setValue} />
+            <ReactQuill className='w-full col-span-11 lg:col-span-9 h-full ' theme="snow" value={delta}
+                onChange={handleChange} ref={quillRef} />
         </>
     )
 }
